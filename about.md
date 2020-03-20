@@ -24,6 +24,8 @@ titles:
   fr-LU   : *FR
   # @end locale config
 key: page-about
+comments:
+  provider: false
 ---
 
 <div align="left">
