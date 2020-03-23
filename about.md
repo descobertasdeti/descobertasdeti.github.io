@@ -23,8 +23,7 @@ titles:
   fr-FR   : *FR
   fr-LU   : *FR
   # @end locale config
-key: page-about
-comments: false
+# key: page-about
 ---
 
 <div align="left">
