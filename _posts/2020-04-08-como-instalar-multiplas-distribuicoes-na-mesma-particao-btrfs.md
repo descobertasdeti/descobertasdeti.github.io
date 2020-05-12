@@ -183,7 +183,7 @@ Para tal, adicione o seguinte no /etc/fstab:<br/>
 Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
 
-`# mkdir /btrfs`
+`# mkdir /btrfs`<br/>
 `# nano /etc/fstab`
 ```
 UUID=<UUID da partição BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
