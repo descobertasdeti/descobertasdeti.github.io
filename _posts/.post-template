@@ -1,6 +1,13 @@
 ---
+title: "Seu Titulo"
+date: "2020-04-08 17:18"
+key: datatudojunto
 layout: article
-title: Page - Aside
 aside:
   toc: true
+articles:
+  data_source: site.sample_page
+  show_excerpt: true
+  show_readmore: true
+tags: suas tags
 ---
