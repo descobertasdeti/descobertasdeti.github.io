@@ -1,1 +1,0 @@
-# descobertasdeti.github.io
