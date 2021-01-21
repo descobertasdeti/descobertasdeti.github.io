@@ -4,7 +4,7 @@ date: "2020-04-08 17:18"
 key: 202004081718
 layout: article
 aside:
-  toc: true
+  toc: false
 articles:
   data_source: site.sample_page
   show_excerpt: true
@@ -14,9 +14,8 @@ tags: btrfs linux
 # Introdução
 Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa
 
-# Começa aqui
-Comecemos pelos requisitos
 ## Requisitos e obervações
+Comecemos pelos requisitos
 - Paciência
 - Uma máquina virtual para testes(Recomendo VirtualBox)
 - Duas isos de algum Linux que suporte particões BTRFS **OU** dois pendrives bootaveis com as respectivas distribuições de sua escolha(No caso de instalar numa máquina real)
@@ -30,7 +29,7 @@ De posse dessas informações, recomendo que você teste o artigo em máquina vi
 
 A partir daqui vou pressupor que você estará em maquina virtual. Mas não se preocupe darei dicas pra você que está instalando num hardware real.
 
-## Instalação da primeira distro
+## Instalação da primeira distribuição
 Não vou impor um modelo padrão de particionamento pois pode dar a impressão que pra funcionar precisa ser desta maneira, quando não é. Então aqui darei apenas um sugestão de particionamento, mas você poderá adaptar a sua realidade.
 
 Sugestão de particionamento: <br/>
@@ -40,10 +39,10 @@ Sugestão de particionamento: <br/>
 ![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)<br/><br/>
 
 **TAMANHO DO DISCO: 240GB**<br/>
-Partição 1: /boot 1GB EXT2 Ubuntu<br/>
-Partição 2: /boot 1GB EXT2 Manjaro<br/>
-Partição 3: SWAP  2GB SWAP<br/>
-Partição 4: / Espaço Restante BTRFS<br/>
+- **Partição 1:** /boot 1GB EXT2 Ubuntu<br/>
+- **Partição 2:** /boot 1GB EXT2 Manjaro<br/>
+- **Partição 3:** SWAP 2GB<br/>
+- **Partição 4:** / Espaço Restante BTRFS<br/>
 
 Dica: No caso de um Dual Boot com Windows, você pode criar uma partição extendida grande e aplicar o sugestão de particionamento na partição extendida.
 {:.success}
@@ -51,50 +50,62 @@ Dica: No caso de um Dual Boot com Windows, você pode criar uma partição exten
 Faça a instalação normalmente, porém se utilizando do particionamento manual para setar o /boot separado.
 
 Ao final da instalação **NÃO REINICIE**, iremos fazer comandos adcionais no terminal.
-Abra um terminal no LiveCD e digite os seguintes comandos.
+Abra um terminal ainda no LiveCD e digite os seguintes comandos.
 
-Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
+Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos. Para logar como root digite `sudo su` em um terminal
 {:.success}
 
 Monte a partição BTRFS:<br/>
-`# mount /dev/sda4 /mnt` <br/>
+```shell
+# mount /dev/sda4 /mnt
+```
 Entre no diretório '/mnt': <br/>
-`# cd /mnt`<br/>
+```shell
+# cd /mnt
+```
 Crie um subvolume especialmente para o Ubuntu:<br/>
-`# btrfs subvolume create ubuntu`<br/>
+```shell
+# btrfs subvolume create ubuntu
+```
 Clone os subvolumes '@' e '@home' para dentro do subvolume 'ubuntu' recém criado e delete os antigos.<br/>
-`# btrfs subvolume snapshot /mnt/@ /mnt/ubuntu`<br/>
-`# btrfs subvolume snapshot /mnt/@home /mnt/ubuntu`<br/>
-`# btrfs subvolume delete /mnt/@`<br/>
-`# btrfs subvolume delete /mnt/@home`<br/>
+```shell
+# btrfs subvolume snapshot /mnt/@ /mnt/ubuntu
+# btrfs subvolume snapshot /mnt/@home /mnt/ubuntu
+# btrfs subvolume delete /mnt/@
+# btrfs subvolume delete /mnt/@home
+```
 Agora detalhe importante. Será necessário modificar os arquivos /etc/fstab e fazer chroot no sistema para reinstalar o Grub na MBR e na /boot.<br/>
 Mas primeiro vamos editar o /etc/fstab:<br/>
-`# nano /mnt/ubuntu/\@/etc/fstab`<br/>
+```shell
+# nano /mnt/ubuntu/@/etc/fstab
+```
 Localize 'subvol=@' e 'subvol=@home' no arquivo e edite colocando 'ubuntu' antes de '@' nos dois parâmetros. Vai ficar mais ou menos assim:<br/>
 
 ![imagem ilustrativa fstab](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_3.png)<br/><br/>
 
-```
-UUID=<UUID da partição> btrfs  defaults,subvol=ubuntu/@  0 1
-UUID=<UUID da partição> btrfs  defaults,subvol=ubuntu/@home 0 2
+```shell
+UUID=<UUID_da_partição> btrfs  defaults,subvol=ubuntu/@  0 1
+UUID=<UUID_da_partição> btrfs  defaults,subvol=ubuntu/@home 0 2
 ```
 Agora faremos chroot no Ubuntu pré instalado e reinstalar o Grub na MBR e na partição /boot: <br/>
-`# cd`<br/>
-`# umount /mnt`<br/>
-`# mount -o subvol=ubuntu/@ /dev/sda4 /mnt`<br/>
-`# mount /dev/sda1 /mnt/boot`<br/>
-`# mount --bind /proc /mnt/proc`<br/>
-`# mount --bind /dev /mnt/dev`<br/>
-`# mount --bind /sys /mnt/sys`<br/>
-`# chroot /mnt /bin/bash`<br/>
-`# grub-install /dev/sda`<br/>
-`# grub-install --force /dev/sda1`<br/>
-`# update-grub`<br/>
-`# exit`<br/>
-`# exit`<br/>
+```shell
+# cd
+# umount /mnt
+# mount -o subvol=ubuntu/@ /dev/sda4 /mnt
+# mount /dev/sda1 /mnt/boot
+# mount --bind /proc /mnt/proc
+# mount --bind /dev /mnt/dev
+# mount --bind /sys /mnt/sys
+# chroot /mnt /bin/bash
+# grub-install /dev/sda
+# grub-install --force /dev/sda1
+# update-grub
+# exit
+# exit
+```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
-## Instalação da Segunda distro
+## Instalação da segunda distribuição
 
 Inicie a instalação normalmente, porém teremos algumas coisas diferentes a se fazer do que na primeira instalação. Vou detalhar todas logo abaixo:
 
@@ -119,38 +130,51 @@ Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que voc
 {:.success}
 
 Monte a partição BTRFS:<br/>
-`# mount /dev/sda4 /mnt` <br/>
+```shell
+# mount /dev/sda4 /mnt
+```
 Entre no diretório '/mnt': <br/>
-`# cd /mnt`<br/>
+```shell
+# cd /mnt
+```
 Crie um subvolume especialmente para o Ubuntu:<br/>
-`# btrfs subvolume create manjaro`<br/>
+```shell
+# btrfs subvolume create manjaro
+```
 Clone os subvolumes '@' e '@home' para dentro do subvolume 'ubuntu' recém criado e delete os antigos.<br/>
-`# btrfs subvolume snapshot /mnt/@ /mnt/manjaro`<br/>
-`# btrfs subvolume snapshot /mnt/@home /mnt/manjaro`<br/>
-`# btrfs subvolume delete /mnt/@`<br/>
-`# btrfs subvolume delete /mnt/@home`<br/>
+```shell
+# btrfs subvolume snapshot /mnt/@ /mnt/manjaro
+# btrfs subvolume snapshot /mnt/@home /mnt/manjaro
+# btrfs subvolume delete /mnt/@
+# btrfs subvolume delete /mnt/@home
+```
 Agora detalhe importante. Será necessário modificar os arquivos /etc/fstab e fazer chroot no sistema para reinstalar o Grub na MBR e na /boot.<br/>
 Mas primeiro vamos editar o /etc/fstab:<br/>
-`# nano /mnt/manjaro/\@/etc/fstab`<br/>
-Localize 'subvol=@' e 'subvol=@home' no arquivo e edite colocando 'ubuntu' antes de '@' nos dois parâmetros. Vai ficar mais ou menos assim:<br/>
+```shell
+# nano /mnt/manjaro/@/etc/fstab
 ```
-UUID=<UUID da partição> btrfs  defaults,subvol=manjaro/@  0 1
-UUID=<UUID da partição> btrfs  defaults,subvol=manjaro/@home 0 2
+Localize 'subvol=@' e 'subvol=@home' no arquivo e edite colocando 'ubuntu' antes de '@' nos dois parâmetros. Vai ficar mais ou menos assim:<br/>
+```conf
+...
+UUID=<UUID_da_partição> btrfs  defaults,subvol=manjaro/@  0 1
+UUID=<UUID_da_partição> btrfs  defaults,subvol=manjaro/@home 0 2
 ```
 Agora faremos chroot no Manjaro pré instalado e reinstalar o Grub na MBR e na partição /boot: <br/>
-`# cd`<br/>
-`# umount /mnt`<br/>
-`# mount -o subvol=manjaro/@ /dev/sda4 /mnt`<br/>
-`# mount /dev/sda2 /mnt/boot`<br/>
-`# mount --bind /proc /mnt/proc`<br/>
-`# mount --bind /dev /mnt/dev`<br/>
-`# mount --bind /sys /mnt/sys`<br/>
-`# chroot /mnt /bin/bash`<br/>
-`# grub-install /dev/sda`<br/>
-`# grub-install --force /dev/sda2`<br/>
-`# update-grub`<br/>
-`# exit`<br/>
-`# exit`<br/>
+```shell
+# cd
+# umount /mnt
+# mount -o subvol=manjaro/@ /dev/sda4 /mnt
+# mount /dev/sda2 /mnt/boot
+# mount --bind /proc /mnt/proc
+# mount --bind /dev /mnt/dev
+# mount --bind /sys /mnt/sys
+# chroot /mnt /bin/bash
+# grub-install /dev/sda
+# grub-install --force /dev/sda2
+# update-grub
+# exit
+# exit
+```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
 ## Chainload do GRUB
@@ -161,14 +185,18 @@ Após bootar abra um terminal no sistema recém instalado e digite:
 
 Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
-
-`# nano /etc/grub.d/40_custom`
+```shell
+# nano /etc/grub.d/40_custom
 ```
+```conf
+...
 menuentry "Ubuntu" {
    configfile (hd0,msdos1)/grub/grub.cfg
 }
 ```
-`# update-grub`
+```shell
+# update-grub
+```
 
 Agora é só reiniciar e a entrada grub do Ubuntu, estará prontinha pra uso. Reinicie e veja a mágica<br/>
 
@@ -176,29 +204,35 @@ Agora é só reiniciar e a entrada grub do Ubuntu, estará prontinha pra uso. Re
 
 ## Considerações finais
 Agora você pode adicionar quantas distros quiser na mesma partição economizando um espaço federal, e só selecionar qual você quer utilizar diretamente do grub na incialização do sistema. E o mais legal é que pode atualizar o grub ou kernel que dificilmente irá interferir nessa configuração que fizemos. Não é massa?
-### Dicas úteis
+## Dicas úteis
 É interessante pra evitar duplicação de arquivos que você adicione ao fstab a partição BTRFS montada com a opção 'subvolid=5'. Pra quê isto? Isto é para quando caso você queira acessar um arquivo que está em outro subvolume btrfs, não tenha que reiniciar o PC só pra isto afinal estão todos na mesma partição, porém sem esta opção ativada no /etc/fstab isso torna impossível.
 Para tal, adicione o seguinte no /etc/fstab:<br/>
 
 Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
-
-`# mkdir /btrfs`<br/>
-`# nano /etc/fstab`
+```shell
+# mkdir /btrfs
+# nano /etc/fstab
 ```
-UUID=<UUID da partição BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
+```conf
+...
+UUID=<UUID_da_partição BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
 ```
-`# mount -a`
-
+```shell
+# mount -a
+```
 Isto irá lhe possiblitar acessar todos os subvolumes diretamente em '/btrfs'.<br/> EX:
-Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico com <br/> `$ ln -s /btrfs/ubuntu/\@home/Downloads ~/Downloads`. <br/>
-Isto irá fazer um link simbolico da pasta Downloads da HOME do Ubuntu até a HOME atual, no exemplo do Manjaro.
+Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico com: <br/> 
+```shell
+$ ln -s /btrfs/ubuntu/\@home/Downloads ~/Downloads
+``` 
+Isto irá fazer um link simbolico da pasta Downloads da HOME do Ubuntu até a HOME atual, no exemplo o Manjaro.
 Legal demais não é?<br/>
 
-Outro detalhe, após tanta modificação acredito eu que não há "boot-repair" que repare esse sistema caso venha a se corromper. Então tenha sempre um pendrive com um Linux qualquer para poder exercer manutenções. Qualquer ajuda, me coloco a disposição para ajuda.
+Outro detalhe, após tanta modificação acredito eu que não há "boot-repair" que repare esse sistema caso venha a se corromper. Então tenha sempre um pendrive com um Linux qualquer para poder exercer manutenções. Qualquer ajuda que precisar, me coloco a disposição.
+
+# Agradecimentos
+Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas comente! Será um prazer ajuda-lo em sua dúvida. Sugestão? Comente também! Colocarei uma referência a você na alteração sugerida. Um abraço, e fiquem com Deus.
 
 # To-Do
 - Vídeo ilustrativo
-
-# Acaba aqui
-Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas comente! Será um prazer ajuda-lo em sua dúvida. Sugestão? Comente também! Colocarei uma referência a você na alteração sugerida. Um abraço, e fiquem com Deus.
