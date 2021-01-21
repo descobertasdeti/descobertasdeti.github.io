@@ -35,7 +35,7 @@ Não vou impor um modelo padrão de particionamento pois pode dar a impressão q
 
 Sugestão de particionamento: <br/>
 
-![Imagem particionamento manual](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png ":lightbox")<br/><br/>
+![Imagem particionamento manual](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png)<br/><br/>
 
 ![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)<br/><br/>
 
