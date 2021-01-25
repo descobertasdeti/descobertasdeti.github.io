@@ -283,6 +283,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   github-pages
+  jekyll-redirect-from
   jekyll-text-theme!
   jekyll-toc
   rake (>= 12.3.3)

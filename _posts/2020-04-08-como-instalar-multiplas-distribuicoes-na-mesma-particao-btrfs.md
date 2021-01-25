@@ -12,6 +12,8 @@ articles:
   show_readmore: true
 tags: btrfs linux
 ---
+* Do not remove this line (it will not be displayed)
+{:toc}
 # Introdução
 Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa
 
@@ -223,10 +225,10 @@ UUID=<UUID_da_partição BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
 # mount -a
 ```
 Isto irá lhe possiblitar acessar todos os subvolumes diretamente em '/btrfs'.<br/> EX:
-Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico com: <br/> 
+Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico com: <br/>
 ```shell
-$ ln -s /btrfs/ubuntu/\@home/Downloads ~/Downloads
-``` 
+$ ln -s /btrfs/ubuntu/@home/Downloads ~/Downloads
+```
 Isto irá fazer um link simbolico da pasta Downloads da HOME do Ubuntu até a HOME atual, no exemplo o Manjaro.
 Legal demais não é?<br/>
 
@@ -237,3 +239,7 @@ Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas 
 
 # To-Do
 - Vídeo ilustrativo
+
+# Notas de Rodapé
+1. Reorganização do tutorial/artigo
+2. Corrigidos vários erros das sintaxes dos comandos e gramática

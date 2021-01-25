@@ -35,7 +35,7 @@ timezone: America/Sao_Paulo # see https://en.wikipedia.org/wiki/List_of_tz_datab
 author:
   type      : person # "person" (default), "organization"
   name      : Tiago J. Silva
-  url       : 
+  url       :
   avatar    : /assets/images/bio-photo.png # path or url of avatar image (square)
   bio       : Apaixonado por tecnologia e com curiosidade aguçada, procuro sempre ensinar a qualquer um que queira aprender. Acredite! Você também pode aprende tecnologia!
   email     : tiagojsvla@gmaiil.com
@@ -209,7 +209,7 @@ defaults:
       sharing: false
       license: true
       aside:
-        toc: true
+        toc: false
       show_edit_on_github: false
       show_subscribe: true
       pageview: true
@@ -222,5 +222,3 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
-  - jekyll-toc
-
