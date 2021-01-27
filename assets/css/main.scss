@@ -4,14 +4,16 @@
 
 // Adding 'Contents' headline to the TOC
 #markdown-toc::before {
-    content: "Tabela de Conteudos";
+    content: "Tópicos";
     font-weight: bold;
+    font-size: 24px;
+    padding-left: 0px;
 }
 
 
 // Using numbers instead of bullets for listing
 #markdown-toc ul {
-    list-style: decimal;
+    list-style: unordered;
 }
 
 #markdown-toc {

@@ -4,20 +4,15 @@ permalink: multiplas-distros-btrfs
 date: "2020-04-08 17:18"
 key: 202004081718
 layout: article
-aside:
-  toc: false
-articles:
-  data_source: site.sample_page
-  show_excerpt: true
-  show_readmore: true
 tags: btrfs linux
 ---
-* Do not remove this line (it will not be displayed)
-{:toc}
 # Introdução
 Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa
 
-## Requisitos e obervações
+* Do not remove this line (it will not be displayed)
+{:toc}
+
+# Requisitos e obervações
 Comecemos pelos requisitos
 - Paciência
 - Uma máquina virtual para testes(Recomendo VirtualBox)
@@ -25,14 +20,14 @@ Comecemos pelos requisitos
   - No exemplo utilizarei Ubuntu e Manjaro
 - Partições /boot separadas para cada distruição<br/>
 
-Obervações: No exemplo utilizarei Ubuntu e Manjaro, porém a partir do momento que você entender a lógica do processo poderá aplicar em qualquer distruibuição. Eu por exemplo utilizo este método na minha máquina real com Gentoo e Debian instalados na mesma partição. Então com alguns testes te garanto que você irá sair mestre nisso. <br/>
+**Observações:** No exemplo utilizarei Ubuntu e Manjaro, porém a partir do momento que você entender a lógica do processo poderá aplicar em qualquer distruibuição. Eu por exemplo utilizo este método na minha máquina real com Gentoo e Debian instalados na mesma partição. Então com alguns testes te garanto que você irá sair mestre nisso. <br/>
 O /boot separado é pra fazermos o chainload do Grub de cada distruibuição, porém caso já tenha em mente instalar apenas duas pode deixar apenas a ultima distruição com o /boot separado. Como não sei se você irá utilizar mais de 2 distruibuições numa mesma partição BTRFS, acredito ser mais prudente deixar essa a recomendação padrão de todas as distros com /boot separado.<br/>
 De posse dessas informações, recomendo que você teste o artigo em máquina virtual, pois assim você evita ficar a mercê de erros que venha a cometer e ficar sem sistema operacional.<br/>
 {:.warning}
 
 A partir daqui vou pressupor que você estará em maquina virtual. Mas não se preocupe darei dicas pra você que está instalando num hardware real.
 
-## Instalação da primeira distribuição
+# Instalação da primeira distribuição
 Não vou impor um modelo padrão de particionamento pois pode dar a impressão que pra funcionar precisa ser desta maneira, quando não é. Então aqui darei apenas um sugestão de particionamento, mas você poderá adaptar a sua realidade.
 
 Sugestão de particionamento: <br/>
@@ -47,7 +42,7 @@ Sugestão de particionamento: <br/>
 - **Partição 3:** SWAP 2GB<br/>
 - **Partição 4:** / Espaço Restante BTRFS<br/>
 
-Dica: No caso de um Dual Boot com Windows, você pode criar uma partição extendida grande e aplicar o sugestão de particionamento na partição extendida.
+**Dica:** No caso de um Dual Boot com Windows, você pode criar uma partição extendida grande e aplicar o sugestão de particionamento na partição extendida.
 {:.success}
 
 Faça a instalação normalmente, porém se utilizando do particionamento manual para setar o /boot separado.
@@ -55,7 +50,7 @@ Faça a instalação normalmente, porém se utilizando do particionamento manual
 Ao final da instalação **NÃO REINICIE**, iremos fazer comandos adcionais no terminal.
 Abra um terminal ainda no LiveCD e digite os seguintes comandos.
 
-Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos. Para logar como root digite `sudo su` em um terminal
+**Dica:** Ao copiar os comandos a seguir, o **'#'** antes de cada comando indica que você deve estar logado como root, para executar os comandos. Para logar como root digite `sudo su` em um terminal
 {:.success}
 
 Monte a partição BTRFS:<br/>
@@ -108,7 +103,7 @@ Agora faremos chroot no Ubuntu pré instalado e reinstalar o Grub na MBR e na pa
 ```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
-## Instalação da segunda distribuição
+# Instalação da segunda distribuição
 
 Inicie a instalação normalmente, porém teremos algumas coisas diferentes a se fazer do que na primeira instalação. Vou detalhar todas logo abaixo:
 
@@ -129,7 +124,7 @@ Agora o processo será parecido com o que fizemos na primeira instalação com p
 Ao final da instalação **NÃO REINICIE**, iremos fazer comandos adcionais no terminal.
 Abra um terminal no LiveCD e digite os seguintes comandos.
 
-Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
+**Dica:** Ao copiar os comandos a seguir, o **'#'** antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
 
 Monte a partição BTRFS:<br/>
@@ -180,13 +175,13 @@ Agora faremos chroot no Manjaro pré instalado e reinstalar o Grub na MBR e na p
 ```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
-## Chainload do GRUB
+# Chainload do GRUB
 De posso do segundo sistema, já instalado, deve ter percebido que o Ubuntu não foi encontrado quando rodamos o 'update-grub' ainda no LiveCD. Mas é pensando nisso deixamos o /boot separado pra ambas as distribuições e instalamos o grub nelas. Sendo assim arrumar esse "problema" é mais fácil que tirar doce de criança.
 
 Vamos lá:<br/>
 Após bootar abra um terminal no sistema recém instalado e digite:
 
-Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
+**Dica:** Ao copiar os comandos a seguir, o **'#'** antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
 ```shell
 # nano /etc/grub.d/40_custom
@@ -205,13 +200,13 @@ Agora é só reiniciar e a entrada grub do Ubuntu, estará prontinha pra uso. Re
 
 ![Grub Chainload](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/GRUB_1.png)<br/>
 
-## Considerações finais
+# Considerações finais
 Agora você pode adicionar quantas distros quiser na mesma partição economizando um espaço federal, e só selecionar qual você quer utilizar diretamente do grub na incialização do sistema. E o mais legal é que pode atualizar o grub ou kernel que dificilmente irá interferir nessa configuração que fizemos. Não é massa?
 ## Dicas úteis
 É interessante pra evitar duplicação de arquivos que você adicione ao fstab a partição BTRFS montada com a opção 'subvolid=5'. Pra quê isto? Isto é para quando caso você queira acessar um arquivo que está em outro subvolume btrfs, não tenha que reiniciar o PC só pra isto afinal estão todos na mesma partição, porém sem esta opção ativada no /etc/fstab isso torna impossível.
 Para tal, adicione o seguinte no /etc/fstab:<br/>
 
-Dica: Ao copiar os comandos a seguir, o '#' antes de cada comando indica que você deve estar logado como root, para executar os comandos.
+**Dica:** Ao copiar os comandos a seguir, o **'#'** antes de cada comando indica que você deve estar logado como root, para executar os comandos.
 {:.success}
 ```shell
 # mkdir /btrfs

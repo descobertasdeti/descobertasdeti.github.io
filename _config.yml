@@ -205,7 +205,12 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: article
+      layout: articles
+      articles:
+          data_source: site.sample_page
+          show_excerpt: true
+          show_readmore: true
+          show_info: true
       sharing: false
       license: true
       aside:
