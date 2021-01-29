@@ -246,6 +246,7 @@ Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas 
 
 # 8. To-Do
 - Vídeo ilustrativo
+
 * * *
 # Notas de Rodapé
 1. Reorganização do tutorial/artigo
