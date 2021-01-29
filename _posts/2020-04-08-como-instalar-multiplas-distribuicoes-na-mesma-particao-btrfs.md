@@ -6,13 +6,25 @@ key: 202004081718
 layout: article
 tags: btrfs linux
 ---
-# Introdução
-Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa
+# 1. Introdução
+Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa.
 
-* Do not remove this line (it will not be displayed)
-{:toc}
+<!-- TOC -->
 
-# Requisitos e obervações
+- [1. Introdução](#1-introdução)
+- [2. Requisitos e obervações](#2-requisitos-e-obervações)
+- [3. Instalação da primeira distribuição](#3-instalação-da-primeira-distribuição)
+- [4. Instalação da segunda distribuição](#4-instalação-da-segunda-distribuição)
+- [5. Chainload do GRUB](#5-chainload-do-grub)
+- [6. Considerações finais](#6-considerações-finais)
+    - [6.1. Dicas úteis](#61-dicas-úteis)
+- [7. Agradecimentos](#7-agradecimentos)
+- [8. To-Do](#8-to-do)
+- [Notas de Rodapé](#notas-de-rodapé)
+
+<!-- /TOC -->
+
+# 2. Requisitos e obervações
 Comecemos pelos requisitos
 - Paciência
 - Uma máquina virtual para testes(Recomendo VirtualBox)
@@ -27,7 +39,7 @@ De posse dessas informações, recomendo que você teste o artigo em máquina vi
 
 A partir daqui vou pressupor que você estará em maquina virtual. Mas não se preocupe darei dicas pra você que está instalando num hardware real.
 
-# Instalação da primeira distribuição
+# 3. Instalação da primeira distribuição
 Não vou impor um modelo padrão de particionamento pois pode dar a impressão que pra funcionar precisa ser desta maneira, quando não é. Então aqui darei apenas um sugestão de particionamento, mas você poderá adaptar a sua realidade.
 
 Sugestão de particionamento: <br/>
@@ -37,10 +49,10 @@ Sugestão de particionamento: <br/>
 ![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)<br/><br/>
 
 **TAMANHO DO DISCO: 240GB**<br/>
-- **Partição 1:** /boot 1GB EXT2 Ubuntu<br/>
-- **Partição 2:** /boot 1GB EXT2 Manjaro<br/>
-- **Partição 3:** SWAP 2GB<br/>
-- **Partição 4:** / Espaço Restante BTRFS<br/>
+- **Partição 1:** /boot 1GB EXT2 Ubuntu
+- **Partição 2:** /boot 1GB EXT2 Manjaro
+- **Partição 3:** SWAP 2GB
+- **Partição 4:** / Espaço Restante BTRFS
 
 **Dica:** No caso de um Dual Boot com Windows, você pode criar uma partição extendida grande e aplicar o sugestão de particionamento na partição extendida.
 {:.success}
@@ -103,7 +115,7 @@ Agora faremos chroot no Ubuntu pré instalado e reinstalar o Grub na MBR e na pa
 ```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
-# Instalação da segunda distribuição
+# 4. Instalação da segunda distribuição
 
 Inicie a instalação normalmente, porém teremos algumas coisas diferentes a se fazer do que na primeira instalação. Vou detalhar todas logo abaixo:
 
@@ -175,7 +187,7 @@ Agora faremos chroot no Manjaro pré instalado e reinstalar o Grub na MBR e na p
 ```
 Pronto! Agora você pode reiniciar o PC e partir para o próximo passo.<br/>
 
-# Chainload do GRUB
+# 5. Chainload do GRUB
 De posso do segundo sistema, já instalado, deve ter percebido que o Ubuntu não foi encontrado quando rodamos o 'update-grub' ainda no LiveCD. Mas é pensando nisso deixamos o /boot separado pra ambas as distribuições e instalamos o grub nelas. Sendo assim arrumar esse "problema" é mais fácil que tirar doce de criança.
 
 Vamos lá:<br/>
@@ -200,9 +212,9 @@ Agora é só reiniciar e a entrada grub do Ubuntu, estará prontinha pra uso. Re
 
 ![Grub Chainload](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/GRUB_1.png)<br/>
 
-# Considerações finais
+# 6. Considerações finais
 Agora você pode adicionar quantas distros quiser na mesma partição economizando um espaço federal, e só selecionar qual você quer utilizar diretamente do grub na incialização do sistema. E o mais legal é que pode atualizar o grub ou kernel que dificilmente irá interferir nessa configuração que fizemos. Não é massa?
-## Dicas úteis
+## 6.1. Dicas úteis
 É interessante pra evitar duplicação de arquivos que você adicione ao fstab a partição BTRFS montada com a opção 'subvolid=5'. Pra quê isto? Isto é para quando caso você queira acessar um arquivo que está em outro subvolume btrfs, não tenha que reiniciar o PC só pra isto afinal estão todos na mesma partição, porém sem esta opção ativada no /etc/fstab isso torna impossível.
 Para tal, adicione o seguinte no /etc/fstab:<br/>
 
@@ -229,12 +241,12 @@ Legal demais não é?<br/>
 
 Outro detalhe, após tanta modificação acredito eu que não há "boot-repair" que repare esse sistema caso venha a se corromper. Então tenha sempre um pendrive com um Linux qualquer para poder exercer manutenções. Qualquer ajuda que precisar, me coloco a disposição.
 
-# Agradecimentos
+# 7. Agradecimentos
 Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas comente! Será um prazer ajuda-lo em sua dúvida. Sugestão? Comente também! Colocarei uma referência a você na alteração sugerida. Um abraço, e fiquem com Deus.
 
-# To-Do
+# 8. To-Do
 - Vídeo ilustrativo
-
+* * *
 # Notas de Rodapé
 1. Reorganização do tutorial/artigo
 2. Corrigidos vários erros das sintaxes dos comandos e gramática
