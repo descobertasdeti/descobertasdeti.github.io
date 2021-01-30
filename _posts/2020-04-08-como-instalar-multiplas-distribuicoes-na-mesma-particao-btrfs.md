@@ -9,20 +9,16 @@ tags: btrfs linux
 # 1. Introdução
 Se você procurou este artigo, que irá ficar deveras grande, você deve ser um usuário avançado de Linux ou um intermediário ao menos. Hoje estarei compartilhando com vocẽs uma idéia maluca que tive, que agora tenho o prazer de chamar de descoberta do ano. Ao final do artigo tentarei deixar um vídeo tutorial com todo o processo, mas não prometo que fique pronto de imediato. Sem mais delongas vamos ao que interessa.
 
-<!-- TOC -->
-
 - [1. Introdução](#1-introdução)
 - [2. Requisitos e obervações](#2-requisitos-e-obervações)
 - [3. Instalação da primeira distribuição](#3-instalação-da-primeira-distribuição)
 - [4. Instalação da segunda distribuição](#4-instalação-da-segunda-distribuição)
 - [5. Chainload do GRUB](#5-chainload-do-grub)
 - [6. Considerações finais](#6-considerações-finais)
-    - [6.1. Dicas úteis](#61-dicas-úteis)
+  - [6.1. Dicas úteis](#61-dicas-úteis)
 - [7. Agradecimentos](#7-agradecimentos)
 - [8. To-Do](#8-to-do)
 - [Notas de Rodapé](#notas-de-rodapé)
-
-<!-- /TOC -->
 
 # 2. Requisitos e obervações
 Comecemos pelos requisitos
@@ -46,13 +42,14 @@ Sugestão de particionamento: <br/>
 
 ![Imagem particionamento manual](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png)<br/><br/>
 
-![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)<br/><br/>
+![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)
 
-**TAMANHO DO DISCO: 240GB**<br/>
-- **Partição 1:** /boot 1GB EXT2 Ubuntu
-- **Partição 2:** /boot 1GB EXT2 Manjaro
-- **Partição 3:** SWAP 2GB
-- **Partição 4:** / Espaço Restante BTRFS
+| Disco/Partição | Montagem | Tamanho         | Sistema de Arquivos | Nome    |
+|----------------|----------|-----------------|---------------------|---------|
+| Partição 1     | /boot    | 1GB             | EXT2                | Ubuntu  |
+| Partição 2     | /boot    | 1GB             | EXT2                | Manjaro |
+| Partição 3     | swap     | minimo 1G       | SWAP                | ***     |
+| Partição 4     | /        | espaço restante | BTRFS               | ***     |
 
 **Dica:** No caso de um Dual Boot com Windows, você pode criar uma partição extendida grande e aplicar o sugestão de particionamento na partição extendida.
 {:.success}
@@ -251,3 +248,4 @@ Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas 
 # Notas de Rodapé
 1. Reorganização do tutorial/artigo
 2. Corrigidos vários erros das sintaxes dos comandos e gramática
+3. Adicionado tabela ilustrativa e de conteudos.
