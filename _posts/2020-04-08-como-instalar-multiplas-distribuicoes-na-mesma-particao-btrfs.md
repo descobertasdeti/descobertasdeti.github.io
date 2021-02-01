@@ -2,6 +2,7 @@
 title: "Como instalar multiplas distribuições Linux na mesma partição BTRFS"
 permalink: multiplas-distros-btrfs
 date: "2020-04-08 17:18"
+comment: false
 layout: article
 tags: btrfs linux
 ---
