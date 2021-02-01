@@ -71,3 +71,22 @@
 
     "custom"
 ;
+
+// TOC "Wikipedia LIKE" BETA
+#markdown-toc::before {
+    content: "Conteúdos";
+    font-weight: bold;
+}
+
+
+// Using numbers instead of bullets for listing
+#markdown-toc ul {
+    list-style: square;
+}
+
+#markdown-toc {
+    border: 1px solid #aaa;
+    padding: 1.5em;
+    list-style: square;
+    display: inline-block;
+}
