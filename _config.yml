@@ -218,6 +218,7 @@ defaults:
       show_subscribe: true
       comment: true
       pageview: true
+      key: default
       
 
 
