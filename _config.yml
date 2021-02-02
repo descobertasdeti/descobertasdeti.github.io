@@ -101,7 +101,7 @@ paginate_path: /page:num # don't change this unless for special need
 
 ## => Sources
 ##############################
-sources: bootcdn #(default), unpkg
+sources: unpkg #(default), unpkg
 
 
 ## => Sharing
@@ -227,3 +227,4 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
+  - lightbox

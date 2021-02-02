@@ -32,9 +32,13 @@ Não vou impor um modelo padrão de particionamento pois pode dar a impressão q
 
 Sugestão de particionamento: <br/>
 
-![Imagem particionamento manual](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png)<br/><br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png" data-lightbox="multiplas-distros-btrfs" data-title="Particionamento manual Ubuntu">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_1.png"/>
+</a>
 
-![Imagem do particionamento sugerido](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png)
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png" data-lightbox="multiplas-distros-btrfs" data-title="Sugestão de Particionamento">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_2.png"/>
+</a>
 
 | Disco/Partição | Montagem | Tamanho         | Sistema de Arquivos | Nome    |
 |----------------|----------|-----------------|---------------------|---------|
@@ -80,7 +84,9 @@ Mas primeiro vamos editar o /etc/fstab:<br/>
 ```
 Localize 'subvol=@' e 'subvol=@home' no arquivo e edite colocando 'ubuntu' antes de '@' nos dois parâmetros. Vai ficar mais ou menos assim:<br/>
 
-![imagem ilustrativa fstab](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_3.png)<br/><br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_3.png" data-lightbox="multiplas-distros-btrfs" data-title="/etc/fstab">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Ubuntu_3.png"/>
+</a>
 
 ```shell
 UUID=<UUID_da_partição> btrfs  defaults,subvol=ubuntu/@  0 1
@@ -112,13 +118,21 @@ Inicie a instalação normalmente, porém teremos algumas coisas diferentes a se
 - Escolha a partição /boot para a segunda distruibuição. Lembrando que se escolher a partição incorreta aqui o seu Ubuntu ficará sem como dar boot, inutilizando mais umas vez nossa primeira instalação. No nosso exemplo escolheremos '/dev/sda2' como nosso /boot do Manjaro.
 particionamento ficará como nas imagens abaixo.
 
-![imagem particionamento manual](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Majaro_1.png)<br/><br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_1.png" data-lightbox="multiplas-distros-btrfs" data-title="Particionamento Manual">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_1.png"/>
+</a>
 
-![manter arquivos na particao btrfs](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_2.png)<br/><br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_2.png" data-lightbox="multiplas-distros-btrfs" data-title="Não formate a partição">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_2.png"/>
+</a>
 
-![imagem do particionamento geral](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_3.png)<br/><br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_3.png" data-lightbox="multiplas-distros-btrfs" data-title="Ilustração particionamento geral">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_3.png"/>
+</a>
 
-![resumo da instalacao](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_4.png)<br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_4.png" data-lightbox="multiplas-distros-btrfs" data-title="Resumo da instalação">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/Manjaro_4.png"/>
+</a>
 
 Agora o processo será parecido com o que fizemos na primeira instalação com pequenas alterações.<br/>
 
@@ -199,12 +213,14 @@ menuentry "Ubuntu" {
 
 Agora é só reiniciar e a entrada grub do Ubuntu, estará prontinha pra uso. Reinicie e veja a mágica<br/>
 
-![Grub Chainload](/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/GRUB_1.png)<br/>
+<a href="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/GRUB_1.png" data-lightbox="multiplas-distros-btrfs" data-title="Grub Chainload">
+  <img src="/assets/images/como-instalar-multiplas-distribuicoes-na-mesma-particao-btrfs/GRUB_1.png"/>
+</a>
 
 # 6. Considerações finais
 Agora você pode adicionar quantas distros quiser na mesma partição economizando um espaço federal, e só selecionar qual você quer utilizar diretamente do grub na incialização do sistema. E o mais legal é que pode atualizar o grub ou kernel que dificilmente irá interferir nessa configuração que fizemos. Não é massa?
 ## 6.1. Dicas úteis
-É interessante pra evitar duplicação de arquivos que você adicione ao fstab a partição BTRFS montada com a opção 'subvolid=5'. Pra quê isto? Isto é para quando caso você queira acessar um arquivo que está em outro subvolume btrfs, não tenha que reiniciar o PC só pra isto afinal estão todos na mesma partição, porém sem esta opção ativada no /etc/fstab isso torna impossível.
+É interessante pra evitar duplicação de arquivos que você adicione ao fstab a partição BTRFS montada com a opção *'subvolid=5'*. Pra quê isto? Isto é para quando caso você queira acessar um arquivo que está em outro subvolume btrfs, não tenha que reiniciar o PC só pra isto afinal estão todos na mesma partição, porém sem esta opção ativada no /etc/fstab isso torna impossível.
 Para tal, adicione o seguinte no /etc/fstab:<br/>
 
 **Dica:** Ao copiar os comandos a seguir, o **'#'** antes de cada comando indica que você deve estar logado como root, para executar os comandos.
@@ -215,16 +231,21 @@ Para tal, adicione o seguinte no /etc/fstab:<br/>
 ```
 ```conf
 ...
-UUID=<UUID_da_partição BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
+UUID=<UUID_da_partição_BTRFS> /btrfs          btrfs  defaults,subvolid=5 0 0
 ```
 ```shell
 # mount -a
 ```
-Isto irá lhe possiblitar acessar todos os subvolumes diretamente em '/btrfs'.<br/> EX:
-Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico com: <br/>
+Isto irá lhe possiblitar acessar todos os subvolumes diretamente em *'/btrfs'*.<br/> 
+
+**Exemplo:**
+Caso precise de um arquivo que baixou no Ubuntu, no Manjaro basta fazer um link simbolico. <br/>
+{:.info}
+
 ```shell
 $ ln -s /btrfs/ubuntu/@home/Downloads ~/Downloads
 ```
+
 Isto irá fazer um link simbolico da pasta Downloads da HOME do Ubuntu até a HOME atual, no exemplo o Manjaro.
 Legal demais não é?<br/>
 
@@ -241,3 +262,5 @@ Com isto finalizo mais um artigo aqui do Descobertas de T.I em caso de dúvidas 
 1. Reorganização do tutorial/artigo
 2. Corrigidos vários erros das sintaxes dos comandos e gramática
 3. Adicionado tabela ilustrativa e de conteudos.
+4. Lightbox nas imagens
+5. Correções finais
